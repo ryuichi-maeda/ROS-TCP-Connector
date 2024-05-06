@@ -31,6 +31,8 @@ namespace Unity.Robotics.ROSTCPConnector
         int m_RosPort = 10000;
         public int RosPort { get => m_RosPort; set => m_RosPort = value; }
 
+        public static int CurrentPort = 10000;
+
         [SerializeField]
         bool m_ConnectOnStart = true;
         public bool ConnectOnStart { get => m_ConnectOnStart; set => m_ConnectOnStart = value; }
@@ -503,6 +505,11 @@ namespace Unity.Robotics.ROSTCPConnector
                 Debug.LogWarning("Invalid ROS IP address: " + RosIPAddress);
 
             m_ConnectionThreadCancellation = new CancellationTokenSource();
+
+            if (CurrentPort != 10000)
+            {
+                RosPort = CurrentPort;
+            }
 
             Task.Run(() => ConnectionThread(
                 RosIPAddress,
